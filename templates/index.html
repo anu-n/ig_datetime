@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  body {
+    background-color: rgb(240, 195, 240);
+    color: purple;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Post Date Extractor</title>
 </head>
 <body>
-    <h1>Extract Instagram Post Date and Time</h1>
-    <form method="post">
-        <label for="url">Enter Instagram URL:</label><br>
-        <input type="text" id="url" name="url" required><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    {% if post_date_time %}
-        <h2>Post Date and Time: {{ post_date_time }}</h2>
-    {% endif %}
+    <div style="text-align: center;">
+        <h1>Hey Babii - Here you can extract Instagram Post Date and Time</h1>
+        <form method="post">
+            <label for="url">Enter Instagram URL:</label><br>
+            <input type="text" id="url" name="url" required><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        {% if post_date_time %}
+            <h2>Post Date and Time: {{ post_date_time }}</h2>
+        {% endif %}
+    </div>
 </body>
 </html>
