@@ -1,0 +1,7 @@
+[build]
+  functions = "functions"
+  command = "pip install -r requirements.txt && gunicorn --bind 0.0.0.0:8080 functions.app:app"
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app"
+  status = 200
