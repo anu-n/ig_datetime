@@ -6,16 +6,27 @@ L = instaloader.Instaloader()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    post_date_time = None
+    posts_info = []
     if request.method == 'POST':
-        url = request.form['url']
+        username = request.form['url']
+        limit = int(request.form.get('limit', 10))  # Default to 10 posts
         try:
-            shortcode = url.split('/')[-2]
-            post = instaloader.Post.from_shortcode(L.context, shortcode)
-            post_date_time = post.date_utc.strftime('%Y-%m-%d %H:%M:%S')
+            profile = instaloader.Profile.from_username(L.context, username)
+            for post in profile.get_posts():
+                if len(posts_info) >= limit:
+                    break
+                post_info = {
+                    'date': post.date_utc.strftime('%Y-%m-%d %H:%M:%S'),
+                    'caption': post.caption if post.caption else 'No caption available',
+                    'url': f"https://www.instagram.com/p/{post.shortcode}/",
+                    'likes': post.likes,
+                    'comments': post.comments,
+                    'views': post.video_view_count if post.is_video else 'N/A'
+                }
+                posts_info.append(post_info)
         except Exception as e:
             return f"Error: {str(e)}"
-    return render_template('index.html', post_date_time=post_date_time)
+    return render_template('index.html', posts=posts_info)
 
 if __name__ == '__main__':
     app.run(debug=True)

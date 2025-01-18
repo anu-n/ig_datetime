@@ -14,18 +14,39 @@
 </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Post Date Extractor</title>
+    <title>Instagram Post Viewer</title>
 </head>
 <body>
     <div style="text-align: center;">
-        <h1>Hey Babii - Here you can extract Instagram Post Date and Time</h1>
+        <h1>Viku's Magic IG Analyser 500 - Powered by Anu</h1>
         <form method="post">
-            <label for="url">Enter Instagram URL:</label><br>
+            <label for="url">Enter Instagram Username:</label><br>
             <input type="text" id="url" name="url" required><br><br>
+            <label for="limit">Number of Posts to Fetch (default 10):</label><br>
+            <input type="number" id="limit" name="limit" min="1" value="10"><br><br>
             <input type="submit" value="Submit">
         </form>
-        {% if post_date_time %}
-            <h2>Post Date and Time: {{ post_date_time }}</h2>
+        {% if posts %}
+            <table style="width:50%; margin: 20px auto; border-collapse: collapse;">
+                <tr>
+                    <th style="border: 1px solid purple; padding: 8px;">URL</th>
+                    <th style="border: 1px solid purple; padding: 8px;">Post Caption</th>
+                    <th style="border: 1px solid purple; padding: 8px;">Date and Time</th>
+                    <th style="border: 1px solid purple; padding: 8px;">Likes</th>
+                    <th style="border: 1px solid purple; padding: 8px;">Comments</th>
+                    <th style="border: 1px solid purple; padding: 8px;">Views</th>
+                </tr>
+                {% for post in posts %}
+                <tr>
+                    <td style="border: 1px solid purple; padding: 8px;"><a href="{{ post.url }}" target="_blank">{{ post.url }}</a></td>
+                    <td style="border: 1px solid purple; padding: 8px;">{{ post.caption }}</td>
+                    <td style="border: 1px solid purple; padding: 8px;">{{ post.date }}</td>
+                    <td style="border: 1px solid purple; padding: 8px;">{{ post.likes }}</td>
+                    <td style="border: 1px solid purple; padding: 8px;">{{ post.comments }}</td>
+                    <td style="border: 1px solid purple; padding: 8px;">{{ post.views }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         {% endif %}
     </div>
 </body>
