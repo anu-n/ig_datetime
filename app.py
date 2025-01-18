@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 import instaloader
+import pytz
+from datetime import datetime
 
 app = Flask(__name__)
 L = instaloader.Instaloader()
@@ -15,8 +17,15 @@ def index():
             for post in profile.get_posts():
                 if len(posts_info) >= limit:
                     break
+                utc_time_str = post.date_utc
+                utc_time = datetime.strptime(utc_time_str, "%Y-%m-%d %H:%M:%S")
+                utc_timezone = pytz.utc
+                utc_time = utc_timezone.localize(utc_time)
+                colombo_timezone = pytz.timezone("Asia/Colombo")
+                local_time = utc_time.astimezone(colombo_timezone)
+                print(local_time.strftime("%Y-%m-%d %H:%M:%S"))
                 post_info = {
-                    'date': post.date_utc.strftime('%Y-%m-%d %H:%M:%S'),
+                    'date': local_time.strftime('%Y-%m-%d %H:%M:%S'),
                     'caption': post.caption if post.caption else 'No caption available',
                     'url': f"https://www.instagram.com/p/{post.shortcode}/",
                     'likes': post.likes,
@@ -29,4 +38,4 @@ def index():
     return render_template('index.html', posts=posts_info)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='localhost', debug=True)
